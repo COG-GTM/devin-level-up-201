@@ -70,6 +70,9 @@
         .narrative em { color: var(--ink); font-style: italic; }
 
         .goal { font-size: 0.98rem; line-height: 1.7; color: var(--ink); margin-bottom: 20px; }
+        .section + .section { margin-top: 30px; padding-top: 30px; border-top: 1px solid var(--line); }
+        .sec-head { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 14px; }
+        .sec-head::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--cyan); margin-right: 10px; vertical-align: middle; }
         code { font-family: var(--mono); font-size: 0.85em; background: rgba(0,0,0,0.06); color: var(--ink); padding: 1px 6px; border-radius: 5px; }
 
         /* Option toggle */
@@ -233,9 +236,12 @@
     var PHASES = [
         {
             id: 0,
-            eyebrow: "Stage 1",
-            title: "Gather Knowledge",
-            narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works, but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em>: it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
+            eyebrow: "Phase 1",
+            title: "Knowledge & Playbooks",
+            sections: [
+                {
+                    heading: "Gather Knowledge",
+                    narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works, but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em>: it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
             goal: "<strong>Goal:</strong> capture a collection of one repo's conventions as a single knowledge note <strong>pinned to that repo</strong>, so Devin retrieves it automatically.",
             options: {
                 a: {
@@ -255,12 +261,10 @@
             extra: [
                 { k: "Validate", v: "Start a fresh session on that repo with a prompt that <em>should</em> use the note (e.g. \u201cadd an endpoint\u201d) and confirm Devin applies the conventions automatically. If it doesn't, recheck that the note is pinned to the repo." }
             ]
-        },
-        {
-            id: 1,
-            eyebrow: "Stage 2",
-            title: "Build a Playbook",
-            narrative: "<span class='label'>Picture this</span><p>Every bug follows the same dance: reproduce it, write a failing test, hunt the root cause, patch it, confirm the test goes green, open the PR. You re-type the same long prompt from memory each time, and half the time you skip the failing-test-first step.</p><p>Freeze that workflow once as a <em>playbook</em>. Next bug, anyone attaches it, drops in the ticket, and Devin runs the exact same steps every time, including the one you keep skipping. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
+                },
+                {
+                    heading: "Build a Playbook",
+                    narrative: "<span class='label'>Picture this</span><p>Every bug follows the same dance: reproduce it, write a failing test, hunt the root cause, patch it, confirm the test goes green, open the PR. You re-type the same long prompt from memory each time, and half the time you skip the failing-test-first step.</p><p>Freeze that workflow once as a <em>playbook</em>. Next bug, anyone attaches it, drops in the ticket, and Devin runs the exact same steps every time, including the one you keep skipping. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
             goal: "<strong>Goal:</strong> turn one repetitive task into a reusable, parameterized <strong>playbook</strong> you attach to a session.",
             options: {
                 a: {
@@ -280,12 +284,16 @@
             extra: [
                 { k: "Validate", v: "Start a fresh session, <strong>attach the playbook</strong> (confirm the blue pill appears), and run it on a real instance. Make sure Devin followed the steps and hit your verification bar, and tighten any step it skipped." }
             ]
+                }
+            ]
         },
         {
-            id: 2,
-            eyebrow: "Stage 3",
+            id: 1,
+            eyebrow: "Phase 2",
             title: "Optimize a Session",
-            narrative: "<span class='label'>Picture this</span><p>You open a session that wasted a ton of time and tokens. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works, a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the time and tokens were already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d; it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
+            sections: [
+                {
+                    narrative: "<span class='label'>Picture this</span><p>You open a session that wasted a ton of time and tokens. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works, a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the time and tokens were already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d; it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
             goal: "<strong>Goal:</strong> find a session that was slow, expensive, or never merged; name <em>why</em>; and apply one fix so that whole category of waste stops.",
             options: {
                 a: {
@@ -299,16 +307,34 @@
                         ["Scope creep", "Task too broad; tried to do too much", "Split into smaller / parallel sessions"],
                         ["Stalled review", "PR opened but never merged", "Smaller PRs + clear success criteria up front"]
                     ],
-                    after: "<strong>Apply one fix now</strong>, usually a knowledge note or playbook from Stage 1/2, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare time and tokens before vs. after."
+                    after: "<strong>Apply one fix now</strong>, usually the knowledge note or playbook from Phase 1, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare time and tokens before vs. after."
                 },
                 b: {
                     title: "Run a before / after",
                     desc: "No session worth dissecting? Prove the value yourself in about 10 minutes. Pick any small, well-scoped task in a repo you know and run it twice.",
-                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for the task with no extra context. Watch Devin guess at your conventions and investigate from scratch.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session now that your Stage 1 knowledge notes exist (Devin retrieves them automatically) and, if it fits, with your Stage 2 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in time, tokens, and back-and-forth is exactly what your artifacts are worth."]
+                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for the task with no extra context. Watch Devin guess at your conventions and investigate from scratch.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session now that your Phase 1 knowledge note exists (Devin retrieves it automatically) and, if it fits, with your Phase 1 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in time, tokens, and back-and-forth is exactly what your artifacts are worth."]
                 }
             },
             extra: [
                 { k: "Validate", v: "Make sure you can name the root cause in one sentence and point to the single artifact you created (knowledge note, playbook, prompt rewrite, or repo-setup change) to prevent that whole category of waste." }
+            ]
+                }
+            ]
+        },
+        {
+            id: 2,
+            eyebrow: "Phase 3",
+            title: "Run Devin via the API",
+            sections: [
+                {
+                    narrative: "<span class='label'>Picture this</span><p>Knowledge and playbooks make Devin sharper inside the app. The API lets you drive Devin from your own tools: a script, your CI, or a button in your own product. To make it concrete, you'll stand up the kanban app's built-in <em>Run with Devin</em> integration and kick off a real session straight from a task card.</p>",
+                    goal: "<strong>Goal:</strong> get the <strong>Run with Devin</strong> integration running locally, with your Devin API credentials stored as <strong>personal secrets</strong>, then kick off a session from the app.",
+                    steps: ["In a Devin session on the <code>kanban-todolist</code> repo, paste the prompt below. It copies the finished <em>Run with Devin</em> integration from <code>.finished/</code> into <code>start/</code> so you don't rebuild it from scratch.", "When Devin asks, hand over <code>DEVIN_API_KEY</code>, <code>DEVIN_ORG_ID</code>, and <code>DEVIN_USER_EMAIL</code> as <strong>personal secrets</strong>, never pasted into chat or committed. Grab the API key from <strong>Settings → Workshop-6-30 org → API Keys</strong>.", "Let Devin run <code>npm start</code> and open <code>http://localhost:3000</code>. Add a task, click <strong>Run with Devin</strong>, and watch it create a real session."],
+                    prompt: "Set up the 'Run with Devin' integration in this repo by following the 201-devin-prompt skill: copy the finished integration from .finished/ into start/ (server.js, js/devin.js, .env.example, plus any files start/ is missing) instead of rebuilding it from scratch. Then walk me through providing DEVIN_API_KEY, DEVIN_ORG_ID, and DEVIN_USER_EMAIL as personal secrets, tell me exactly where to get the API key, write them into a git-ignored start/.env, run npm start, and open the app so I can kick off a Devin session from a task.",
+                    extra: [
+                        { k: "Validate", v: "The app at <code>localhost:3000</code> should show the <strong>Run with Devin</strong> control, which only appears once all three secrets are set. Kicking it off on a task creates a real session you can open in the Devin web app." }
+                    ]
+                }
             ]
         }
     ];
@@ -368,9 +394,8 @@
                         .replace(/\[[^\]]*?\]/g, function (m) { return "<span class='hl'>" + m + "</span>"; });
     }
 
-    function optionPaneHTML(opt, letter) {
-        var html = "<div class='opt-title " + letter + "'><span class='pill'>Option " + letter.toUpperCase() + "</span>" + opt.title + "</div>";
-        html += "<p class='opt-desc'>" + opt.desc + "</p>";
+    function blockHTML(opt) {
+        var html = "";
         if (opt.steps) {
             html += "<ol class='steps'>";
             opt.steps.forEach(function (st) { html += "<li>" + st + "</li>"; });
@@ -396,6 +421,41 @@
         return html;
     }
 
+    function optionPaneHTML(opt, letter) {
+        var html = "<div class='opt-title " + letter + "'><span class='pill'>Option " + letter.toUpperCase() + "</span>" + opt.title + "</div>";
+        html += "<p class='opt-desc'>" + opt.desc + "</p>";
+        return html + blockHTML(opt);
+    }
+
+    function sectionHTML(sec, secIdx, phaseId, s) {
+        var html = "";
+        if (sec.heading) html += "<div class='sec-head'>" + sec.heading + "</div>";
+        if (sec.narrative) html += "<div class='narrative'>" + sec.narrative + "</div>";
+        if (sec.goal) html += "<div class='goal'>" + sec.goal + "</div>";
+
+        if (sec.options) {
+            var key = phaseId + "-" + secIdx;
+            var sel = (s.opt && s.opt[key]) === "b" ? "b" : "a";
+            html += "<div class='opt-toggle' role='tablist'>";
+            html += "<button class='opt-btn" + (sel === "a" ? " active" : "") + "' data-sec='" + secIdx + "' data-opt='a'><span class='tag'>A</span>" + sec.options.a.title + "</button>";
+            html += "<button class='opt-btn" + (sel === "b" ? " active" : "") + "' data-sec='" + secIdx + "' data-opt='b'><span class='tag'>B</span>" + sec.options.b.title + "</button>";
+            html += "</div>";
+            html += "<div class='opt-pane" + (sel === "a" ? " active" : "") + "' data-sec='" + secIdx + "' data-pane='a'>" + optionPaneHTML(sec.options.a, "a") + "</div>";
+            html += "<div class='opt-pane" + (sel === "b" ? " active" : "") + "' data-sec='" + secIdx + "' data-pane='b'>" + optionPaneHTML(sec.options.b, "b") + "</div>";
+        } else {
+            html += blockHTML(sec);
+        }
+
+        if (sec.extra) {
+            html += "<div class='extra'>";
+            sec.extra.forEach(function (e) {
+                html += "<div class='row" + (e.check ? " check" : "") + "'><span class='k'>" + e.k + "</span><span class='v'>" + e.v + "</span></div>";
+            });
+            html += "</div>";
+        }
+        return html;
+    }
+
     function renderStage() {
         var p = PHASES[current];
         var s = loadState();
@@ -404,26 +464,9 @@
 
         var body = document.getElementById("stage-body");
         var html = "";
-        if (p.narrative) html += "<div class='narrative'>" + p.narrative + "</div>";
-        if (p.goal) html += "<div class='goal'>" + p.goal + "</div>";
-
-        if (p.options) {
-            var sel = (s.opt && s.opt[p.id]) === "b" ? "b" : "a";
-            html += "<div class='opt-toggle' role='tablist'>";
-            html += "<button class='opt-btn" + (sel === "a" ? " active" : "") + "' data-opt='a'><span class='tag'>A</span>" + p.options.a.title + "</button>";
-            html += "<button class='opt-btn" + (sel === "b" ? " active" : "") + "' data-opt='b'><span class='tag'>B</span>" + p.options.b.title + "</button>";
-            html += "</div>";
-            html += "<div class='opt-pane" + (sel === "a" ? " active" : "") + "' data-pane='a'>" + optionPaneHTML(p.options.a, "a") + "</div>";
-            html += "<div class='opt-pane" + (sel === "b" ? " active" : "") + "' data-pane='b'>" + optionPaneHTML(p.options.b, "b") + "</div>";
-        }
-
-        if (p.extra) {
-            html += "<div class='extra'>";
-            p.extra.forEach(function (e) {
-                html += "<div class='row" + (e.check ? " check" : "") + "'><span class='k'>" + e.k + "</span><span class='v'>" + e.v + "</span></div>";
-            });
-            html += "</div>";
-        }
+        p.sections.forEach(function (sec, i) {
+            html += "<div class='section'>" + sectionHTML(sec, i, p.id, s) + "</div>";
+        });
 
         body.innerHTML = html;
         wireBody();
@@ -441,9 +484,10 @@
         document.querySelectorAll(".opt-btn").forEach(function (btn) {
             btn.addEventListener("click", function () {
                 var opt = this.getAttribute("data-opt");
-                var s = loadState(); s.opt = s.opt || {}; s.opt[PHASES[current].id] = opt; saveState(s);
-                document.querySelectorAll(".opt-btn").forEach(function (b) { b.classList.toggle("active", b.getAttribute("data-opt") === opt); });
-                document.querySelectorAll(".opt-pane").forEach(function (pane) { pane.classList.toggle("active", pane.getAttribute("data-pane") === opt); });
+                var secIdx = this.getAttribute("data-sec");
+                var s = loadState(); s.opt = s.opt || {}; s.opt[PHASES[current].id + "-" + secIdx] = opt; saveState(s);
+                document.querySelectorAll(".opt-btn[data-sec='" + secIdx + "']").forEach(function (b) { b.classList.toggle("active", b.getAttribute("data-opt") === opt); });
+                document.querySelectorAll(".opt-pane[data-sec='" + secIdx + "']").forEach(function (pane) { pane.classList.toggle("active", pane.getAttribute("data-pane") === opt); });
             });
         });
         // copy buttons
