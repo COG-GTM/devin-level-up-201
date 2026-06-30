@@ -1,8 +1,9 @@
-# 201-devin-prompt — Run Devin via the API (Phase 3)
+# 201-devin-prompt — Secrets (Phase 3)
 
 Stand up the kanban Daily Task Tracker's **Run with Devin** integration locally so a
-workshop participant can kick off a real Devin session from the app, using their own
-Devin API credentials stored as **personal secrets**.
+workshop participant can see **personal secrets** in action: the integration needs a
+Devin API key plus a couple of config values, and the whole point is to supply them
+as secrets rather than pasting them into chat or code.
 
 ## 1. Use the finished files — do not rebuild
 
