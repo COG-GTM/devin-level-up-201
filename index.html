@@ -202,6 +202,22 @@
             </div>
         </div>
 
+        <div class="stage gate-card" id="gate" style="display:none">
+            <div class="stage-head">
+                <div class="stage-eyebrow">Hold here</div>
+                <div class="stage-title">Wait here</div>
+            </div>
+            <div class="body" id="gate-body"></div>
+        </div>
+
+        <div class="stage finished-card" id="finished" style="display:none">
+            <div class="stage-head">
+                <div class="stage-eyebrow">Done</div>
+                <div class="stage-title">Nice work</div>
+            </div>
+            <div class="body" id="finished-body"></div>
+        </div>
+
         <div class="footer">
             <button class="reset-btn" onclick="resetAll()">Reset progress</button>
             <a class="docs-link" href="https://docs.devin.ai" target="_blank" rel="noopener">Devin docs ↗</a>
@@ -460,12 +476,11 @@
         if (current === 0) { backToIntro(); } else { setPhase(current - 1); }
     });
     document.getElementById("next-btn").addEventListener("click", function () {
-        if (current === PHASES.length - 1) {
-            var s = loadState(); s.done[PHASES[current].id] = true; saveState(s);
-            document.getElementById("complete-check").checked = true;
-            updateProgress(); renderStepper();
-            showToast("Workshop complete. Nice work.");
-        } else { setPhase(current + 1); }
+        var s = loadState(); s.done[PHASES[current].id] = true; saveState(s);
+        document.getElementById("complete-check").checked = true;
+        updateProgress(); renderStepper();
+        if (current === PHASES.length - 1) { showFinished(); }
+        else { showGate(current + 1); }
     });
     document.getElementById("complete-check").addEventListener("change", function () {
         var s = loadState();
@@ -476,21 +491,40 @@
 
     function resetAll() {
         localStorage.removeItem(STORAGE_KEY);
-        current = 0; renderStage(); updateProgress(); applyView(false);
+        current = 0; renderStage(); updateProgress(); showView("intro");
         showToast("Progress reset");
     }
 
-    function applyView(started) {
-        document.getElementById("intro").style.display = started ? "none" : "block";
-        document.getElementById("workshop").style.display = started ? "block" : "none";
+    function showView(name) {
+        document.getElementById("intro").style.display = name === "intro" ? "block" : "none";
+        document.getElementById("workshop").style.display = name === "workshop" ? "block" : "none";
+        document.getElementById("gate").style.display = name === "gate" ? "block" : "none";
+        document.getElementById("finished").style.display = name === "finished" ? "block" : "none";
     }
     function beginWorkshop() {
         var s = loadState(); s.started = true; saveState(s);
-        applyView(true); setPhase(0);
+        showView("workshop"); setPhase(0);
     }
     function backToIntro() {
         var s = loadState(); s.started = false; saveState(s);
-        applyView(false); window.scrollTo({ top: 0, behavior: "smooth" });
+        showView("intro"); window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function showGate(nextIndex) {
+        document.getElementById("gate-body").innerHTML =
+            "<div class='narrative'><span class='label'>Pause</span><p>Nice, that stage is done. <strong>Wait here</strong> until we move on to the next stage as a group. We'll come around if anyone is stuck.</p></div>" +
+            "<div class='start-wrap'><button class='nav-btn primary start-btn' id='gate-continue'>Continue when we move on &rarr;</button></div>";
+        document.getElementById("gate-continue").addEventListener("click", function () {
+            showView("workshop"); setPhase(nextIndex);
+        });
+        showView("gate"); window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function showFinished() {
+        document.getElementById("finished-body").innerHTML =
+            "<div class='narrative'><span class='label'>That's a wrap</span><p>You walked in using Devin and you're walking out having <em>tuned</em> it: knowledge that stops the guessing, a playbook that automates a repeat, and a fix that kills a recurring source of waste.</p></div>" +
+            "<div class='goal'><p>Keep the momentum: ship today's notes and playbooks to your whole org, and put session optimization on a recurring schedule.</p></div>" +
+            "<div class='start-wrap'><button class='nav-btn primary start-btn' id='finished-restart'>Back to the start</button></div>";
+        document.getElementById("finished-restart").addEventListener("click", backToIntro);
+        showView("finished"); window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     (function init() {
@@ -505,7 +539,7 @@
         for (var j = 0; j < current; j++) { s.done[PHASES[j].id] = true; }
         saveState(s);
         renderStage(); updateProgress();
-        applyView(!!s.started);
+        showView(s.started ? "workshop" : "intro");
     })();
     </script>
 </body>
