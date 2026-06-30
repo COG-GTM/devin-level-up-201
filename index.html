@@ -187,7 +187,6 @@
                 <div class="stage-head">
                     <div class="stage-eyebrow" id="stage-eyebrow"></div>
                     <div class="stage-title" id="stage-title"></div>
-                    <span class="stage-meta" id="stage-meta"></span>
                 </div>
                 <div class="body" id="stage-body"></div>
                 <div class="stage-foot">
@@ -214,14 +213,13 @@
     <script>
     var FRAMING = {
         narrative: "<span class='label'>Why we're here</span><p>You already know how to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt. They come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
-        goal: "<p>We'll work three levers, in order, each one making the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong>: teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong>: turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong>: find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3 or 4, and mix experience levels. If you haven't used Devin much, team up with someone who has.</p>"
+        goal: "<p>We'll work three things, in order, each one making the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong>: teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong>: turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong>: find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3 or 4, and mix experience levels. If you haven't used Devin much, team up with someone who has.</p>"
     };
     var PHASES = [
         {
             id: 0,
-            eyebrow: "Stage 1 · Lever 1",
+            eyebrow: "Stage 1",
             title: "Gather Knowledge",
-            meta: "Capture conventions",
             narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works, but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em>: it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
             goal: "<strong>Goal:</strong> capture 4–6 of your team's conventions as <strong>atomic knowledge notes</strong> Devin retrieves automatically.",
             options: {
@@ -240,15 +238,13 @@
                 }
             },
             extra: [
-                { k: "Validate", v: "Start a fresh session with a prompt that <em>should</em> pull a note (e.g. \u201cadd an endpoint\u201d). Confirm Devin actually applies the rule. If it doesn't fire, the trigger is too narrow, so widen it and retry." },
-                { k: "Checkpoint", check: true, v: "<em>Which single note will save you the most review cycles, and why?</em>" }
+                { k: "Validate", v: "Start a fresh session with a prompt that <em>should</em> pull a note (e.g. \u201cadd an endpoint\u201d) and confirm Devin actually applies the rule. If it doesn't fire, the trigger is too narrow, so widen it and retry." }
             ]
         },
         {
             id: 1,
-            eyebrow: "Stage 2 · Lever 2",
+            eyebrow: "Stage 2",
             title: "Build a Playbook",
-            meta: "Automate the repeats",
             narrative: "<span class='label'>Picture this</span><p>Every bug follows the same dance: reproduce it, write a failing test, hunt the root cause, patch it, confirm the test goes green, open the PR. You re-type the same long prompt from memory each time, and half the time you skip the failing-test-first step.</p><p>Freeze that workflow once as a <em>playbook</em>. Next bug, anyone attaches it, drops in the ticket, and Devin runs the exact same steps every time, including the one you keep skipping. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
             goal: "<strong>Goal:</strong> turn one repetitive task into a reusable, parameterized <strong>playbook</strong> you attach to a session.",
             options: {
@@ -267,15 +263,13 @@
                 }
             },
             extra: [
-                { k: "Validate", v: "Start a fresh session, <strong>attach the playbook</strong> (confirm the blue pill appears), and run it on a real instance. Did Devin follow the steps and hit your verification bar? Tighten any step it skipped." },
-                { k: "Checkpoint", check: true, v: "<em>Did it run with less back-and-forth than your usual prompt? Which one step did you tighten?</em>" }
+                { k: "Validate", v: "Start a fresh session, <strong>attach the playbook</strong> (confirm the blue pill appears), and run it on a real instance. Make sure Devin followed the steps and hit your verification bar, and tighten any step it skipped." }
             ]
         },
         {
             id: 2,
-            eyebrow: "Stage 3 · Lever 3",
+            eyebrow: "Stage 3",
             title: "Optimize a Session",
-            meta: "Kill the waste",
             narrative: "<span class='label'>Picture this</span><p>You open a session that burned a ton of usage. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works, a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the cost was already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d; it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
             goal: "<strong>Goal:</strong> find a session that was slow, expensive, or never merged; name <em>why</em>; and apply one fix so that whole category of waste stops.",
             options: {
@@ -294,12 +288,12 @@
                 },
                 b: {
                     title: "Run a before / after",
-                    desc: "No session worth dissecting? Prove the value yourself in about 10 minutes with a task every team has, like adding a small endpoint or fixing a flaky test.",
-                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for a real task (e.g. \u201cadd a DELETE /users/:id endpoint\u201d) with no extra context. Watch it guess conventions and investigate.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session with your Stage 1 knowledge notes live and/or your Stage 2 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in usage and quality is exactly what your artifacts are worth."]
+                    desc: "No session worth dissecting? Prove the value yourself in about 10 minutes. Pick any small, well-scoped task in a repo you know and run it twice.",
+                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for the task with no extra context. Watch Devin guess at your conventions and investigate from scratch.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session now that your Stage 1 knowledge notes exist (Devin retrieves them automatically) and, if it fits, with your Stage 2 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in usage and back-and-forth is exactly what your artifacts are worth."]
                 }
             },
             extra: [
-                { k: "Checkpoint", check: true, v: "<em>Name the root cause and the single artifact you created to prevent that whole category of waste.</em>" }
+                { k: "Validate", v: "Make sure you can name the root cause in one sentence and point to the single artifact you created (knowledge note, playbook, prompt rewrite, or repo-setup change) to prevent that whole category of waste." }
             ]
         }
     ];
@@ -392,7 +386,6 @@
         var s = loadState();
         document.getElementById("stage-eyebrow").textContent = p.eyebrow;
         document.getElementById("stage-title").textContent = p.title;
-        document.getElementById("stage-meta").textContent = p.meta;
 
         var body = document.getElementById("stage-body");
         var html = "";
