@@ -134,6 +134,9 @@
         .nav-btn.primary { background: var(--cyan); border-color: var(--cyan); color: var(--ink); }
         .nav-btn.primary:hover:not(:disabled) { background: #00d4cd; border-color: #00d4cd; color: var(--ink); }
         .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .start-wrap { text-align: center; margin-top: 6px; }
+        .start-btn { font-size: 0.98rem; padding: 13px 30px; }
+        .intro-card .body { padding-top: 26px; }
 
         .footer { text-align: center; margin-top: 22px; display: flex; gap: 14px; align-items: center; justify-content: center; }
         .reset-btn { background: none; border: 1px solid var(--line); color: var(--muted); padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
@@ -164,28 +167,38 @@
             <div class="logo"><span class="w1">Devin</span> <span class="w2">Level</span> <span class="w3">Up</span></div>
         </div>
 
-        <div class="progress-wrap">
-            <div class="progress-label"><span id="progress-text">0 / 5 complete</span><span id="progress-pct">0%</span></div>
-            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="stage intro-card" id="intro">
+            <div class="stage-head">
+                <div class="stage-eyebrow">Start here</div>
+                <div class="stage-title">Leveling up with Devin</div>
+            </div>
+            <div class="body" id="intro-body"></div>
         </div>
 
-        <div class="stepper" id="stepper"></div>
-
-        <div class="stage">
-            <div class="stage-head">
-                <div class="stage-eyebrow" id="stage-eyebrow"></div>
-                <div class="stage-title" id="stage-title"></div>
-                <span class="stage-meta" id="stage-meta"></span>
+        <div id="workshop" style="display:none">
+            <div class="progress-wrap">
+                <div class="progress-label"><span id="progress-text">0 / 3 complete</span><span id="progress-pct">0%</span></div>
+                <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
             </div>
-            <div class="body" id="stage-body"></div>
-            <div class="stage-foot">
-                <label class="complete-toggle">
-                    <input type="checkbox" id="complete-check">
-                    <span>Mark this step done</span>
-                </label>
-                <div class="nav-btns">
-                    <button class="nav-btn" id="prev-btn">&larr; Back</button>
-                    <button class="nav-btn primary" id="next-btn">Next &rarr;</button>
+
+            <div class="stepper" id="stepper"></div>
+
+            <div class="stage">
+                <div class="stage-head">
+                    <div class="stage-eyebrow" id="stage-eyebrow"></div>
+                    <div class="stage-title" id="stage-title"></div>
+                    <span class="stage-meta" id="stage-meta"></span>
+                </div>
+                <div class="body" id="stage-body"></div>
+                <div class="stage-foot">
+                    <label class="complete-toggle">
+                        <input type="checkbox" id="complete-check">
+                        <span>Mark this step done</span>
+                    </label>
+                    <div class="nav-btns">
+                        <button class="nav-btn" id="prev-btn">&larr; Back</button>
+                        <button class="nav-btn primary" id="next-btn">Next &rarr;</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -199,17 +212,13 @@
     <div class="toast" id="toast"></div>
 
     <script>
+    var FRAMING = {
+        narrative: "<span class='label'>Why we're here</span><p>You already know how to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt. They come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
+        goal: "<p>We'll work three levers, in order, each one making the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong>: teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong>: turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong>: find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3 or 4, and mix experience levels. If you haven't used Devin much, team up with someone who has.</p>"
+    };
     var PHASES = [
         {
             id: 0,
-            eyebrow: "Start here",
-            title: "Framing",
-            meta: "Set the table",
-            narrative: "<span class='label'>Why we're here</span><p>You already know how to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt. They come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
-            goal: "<p>We'll work three levers, in order, each one making the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong>: teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong>: turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong>: find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3 or 4, and mix experience levels. If you haven't used Devin much, team up with someone who has.</p>"
-        },
-        {
-            id: 1,
             eyebrow: "Stage 1 · Lever 1",
             title: "Gather Knowledge",
             meta: "Capture conventions",
@@ -217,9 +226,9 @@
             goal: "<strong>Goal:</strong> capture 4–6 of your team's conventions as <strong>atomic knowledge notes</strong> Devin retrieves automatically.",
             options: {
                 a: {
-                    title: "Let Devin interview you",
-                    desc: "Nothing written down? Let Devin pull it out of you. It asks about a repo's docs and conventions, then <strong>suggests</strong> atomic notes for you to review and save. The prompt below is just an optional way to kick it off.",
-                    steps: ["Point Devin at the repo you know best.", "Answer its questions about docs, naming, structure, and CI.", "Review the notes it suggests and save the keepers under <strong>Knowledge \u2192 New</strong>."],
+                    title: "Create Knowledge for Devin",
+                    desc: "Capture your team's conventions as atomic notes Devin retrieves automatically. Write them from what you already know. The optional prompt below just has Devin interview you and suggest notes if you want a hand.",
+                    steps: ["Pick the repo you know best and list its real conventions: naming, structure, error handling, API shape, CI.", "Write each as an atomic note, one rule each, under <strong>Knowledge \u2192 New</strong>.", "Give each note a trigger so Devin retrieves it at the right moment."],
                     promptOptional: true,
                     prompt: "Interview me to capture conventions for [repo]. Ask one question at a time about its docs, naming, structure, error handling, and CI. When you have enough, suggest a short list of atomic knowledge notes, each with a trigger and a one-line rule, for me to review."
                 },
@@ -236,19 +245,19 @@
             ]
         },
         {
-            id: 2,
+            id: 1,
             eyebrow: "Stage 2 · Lever 2",
             title: "Build a Playbook",
             meta: "Automate the repeats",
-            narrative: "<span class='label'>Picture this</span><p>Every release, someone does the same dance: cut the branch, bump the version, regenerate the changelog from merged PRs, run the smoke tests, open the PR. Everyone does it slightly differently, the new hire doesn't know the steps, and you re-type a long prompt from memory each time, forgetting the smoke-test step half the time.</p><p>A <em>playbook</em> freezes that workflow once. Next release, anyone attaches it, fills in <code>&lt;version&gt;</code>, and Devin runs the exact same steps every time, including the one you keep forgetting. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
+            narrative: "<span class='label'>Picture this</span><p>Every bug follows the same dance: reproduce it, write a failing test, hunt the root cause, patch it, confirm the test goes green, open the PR. You re-type the same long prompt from memory each time, and half the time you skip the failing-test-first step.</p><p>Freeze that workflow once as a <em>playbook</em>. Next bug, anyone attaches it, drops in the ticket, and Devin runs the exact same steps every time, including the one you keep skipping. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
             goal: "<strong>Goal:</strong> turn one repetitive task into a reusable, parameterized <strong>playbook</strong> you attach to a session.",
             options: {
                 a: {
-                    title: "Let Devin draft it with you",
-                    desc: "Not sure how to structure it? Name a task you keep repeating and let Devin study how you do it today, then <strong>draft</strong> the playbook for you to refine. The prompt below is just an optional way to kick it off.",
-                    steps: ["Name a task you repeat: a release, a dep bump, scaffolding a component.", "Let Devin read 2 or 3 recent PRs that did it and ask you about the gaps.", "Review its draft and save it under <strong>Playbooks \u2192 New</strong>."],
+                    title: "Automate a task you repeat",
+                    desc: "Think about what <em>you</em> do over and over: fixing a bug, adding an endpoint, cutting a release, scaffolding a component. Pick one and turn it into a parameterized playbook. The optional prompt is just a fallback for when you're stuck on scoping it.",
+                    steps: ["Name a task you do day to day and the exact steps you take.", "Write it as a playbook: overview, inputs (e.g. <code>&lt;ticket_id&gt;</code>), ordered steps, and a verification step.", "Save it under <strong>Playbooks \u2192 New</strong>."],
                     promptOptional: true,
-                    prompt: "Help me turn <recurring task> in [repo] into a playbook. Read 2 or 3 recent PRs that did it, ask me about anything unclear, then draft a parameterized playbook (overview, inputs, ordered steps, and a verification step) for me to review."
+                    prompt: "I want to turn a task I repeat into a playbook but I'm not sure how to scope it. Ask me questions about what I do over and over and the exact steps I take, then draft a parameterized playbook (overview, inputs, ordered steps, and a verification step) for me to review."
                 },
                 b: {
                     title: "Security vulnerability sweep",
@@ -263,7 +272,7 @@
             ]
         },
         {
-            id: 3,
+            id: 2,
             eyebrow: "Stage 3 · Lever 3",
             title: "Optimize a Session",
             meta: "Kill the waste",
@@ -273,7 +282,7 @@
                 a: {
                     title: "Diagnose a real session",
                     desc: "No API or special access needed. Just scroll back through your own session history in the web app and find a bad one.",
-                    steps: ["Hunt for the tells: a long thread with lots of back-and-forth, an unusually high usage number, a session that ran forever, or a PR opened but never merged.", "Open it and skim the timeline to see where the time actually went. (The session's <strong>Insights</strong> tab summarizes it for you, but eyeballing the thread is enough.)", "Classify it into <strong>exactly one</strong> root cause, then apply the matching fix."],
+                    steps: ["Hunt for the tells: a long thread with lots of back-and-forth, an unusually high usage number, a session that ran forever, or a PR opened but never merged.", "Open it and click <strong>Generate session insights</strong> to get a breakdown of where the time and ACUs actually went.", "Classify it into <strong>exactly one</strong> root cause, then apply the matching fix."],
                     table: [
                         ["Unnecessary investigation", "Searched many files before finding an existing pattern", "Knowledge note / skill naming the file"],
                         ["Wrong approach", "Chose a strategy that conflicted and had to rewrite", "Pin the approach in a prompt / skill"],
@@ -284,22 +293,14 @@
                     after: "<strong>Apply one fix now</strong>, usually a knowledge note or playbook from Stage 1/2, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare usage before vs. after."
                 },
                 b: {
-                    title: "Manufacture a before / after",
-                    desc: "No bad sessions to point at? Create the contrast yourself in about 10 minutes. It proves the value of everything you built today.",
-                    steps: ["<strong>Baseline:</strong> start a fresh session with a deliberately thin prompt for a real-ish task (no extra context). Watch it investigate, guess conventions, maybe go down the wrong path.", "<strong>Optimized:</strong> start a second session for the <em>same</em> task, this time with your Stage 1 knowledge notes live and/or your Stage 2 playbook attached.", "<strong>Compare</strong> usage and quality side by side. The gap is exactly what your artifacts are worth."]
+                    title: "Run a before / after",
+                    desc: "No session worth dissecting? Prove the value yourself in about 10 minutes with a task every team has, like adding a small endpoint or fixing a flaky test.",
+                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for a real task (e.g. \u201cadd a DELETE /users/:id endpoint\u201d) with no extra context. Watch it guess conventions and investigate.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session with your Stage 1 knowledge notes live and/or your Stage 2 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in usage and quality is exactly what your artifacts are worth."]
                 }
             },
             extra: [
                 { k: "Checkpoint", check: true, v: "<em>Name the root cause and the single artifact you created to prevent that whole category of waste.</em>" }
             ]
-        },
-        {
-            id: 4,
-            eyebrow: "Finish",
-            title: "Wrap-Up",
-            meta: "Share + ship",
-            narrative: "<span class='label'>Land it</span><p>You walked in using Devin and you're walking out having <em>tuned</em> it: a knowledge note, a playbook, and a fix that each kill a recurring source of waste. Small artifacts, compounding returns.</p>",
-            goal: "<p><strong>Share-out:</strong> each group names the <strong>single most impactful artifact</strong> they built today and the recurring waste it kills.</p><p><strong>Take it home:</strong></p><ul class='steps'><li>Ship today's notes and playbooks to the whole org so everyone benefits.</li><li>Put Stage 3 on a schedule: a weekly recurring session that pulls the last 7 days, classifies waste by the buckets above, and posts the top 3 highest-leverage fixes to Slack or Notion.</li></ul><p>That's leveling up: less re-explaining, fewer wasted cycles, more shipping.</p>"
         }
     ];
 
@@ -420,7 +421,7 @@
         wireBody();
 
         document.getElementById("complete-check").checked = !!s.done[p.id];
-        document.getElementById("prev-btn").disabled = current === 0;
+        document.getElementById("prev-btn").disabled = false;
         var nb = document.getElementById("next-btn");
         nb.disabled = current === PHASES.length - 1;
         nb.innerHTML = (current === PHASES.length - 1) ? "Done" : "Next &rarr;";
@@ -462,7 +463,9 @@
     }
     function goTo(i) { setPhase(i); }
 
-    document.getElementById("prev-btn").addEventListener("click", function () { setPhase(current - 1); });
+    document.getElementById("prev-btn").addEventListener("click", function () {
+        if (current === 0) { backToIntro(); } else { setPhase(current - 1); }
+    });
     document.getElementById("next-btn").addEventListener("click", function () { setPhase(current + 1); });
     document.getElementById("complete-check").addEventListener("change", function () {
         var s = loadState();
@@ -473,16 +476,36 @@
 
     function resetAll() {
         localStorage.removeItem(STORAGE_KEY);
-        current = 0; renderStage(); updateProgress();
+        current = 0; renderStage(); updateProgress(); applyView(false);
         showToast("Progress reset");
     }
 
+    function applyView(started) {
+        document.getElementById("intro").style.display = started ? "none" : "block";
+        document.getElementById("workshop").style.display = started ? "block" : "none";
+    }
+    function beginWorkshop() {
+        var s = loadState(); s.started = true; saveState(s);
+        applyView(true); setPhase(0);
+    }
+    function backToIntro() {
+        var s = loadState(); s.started = false; saveState(s);
+        applyView(false); window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     (function init() {
+        document.getElementById("intro-body").innerHTML =
+            "<div class='narrative'>" + FRAMING.narrative + "</div>" +
+            "<div class='goal'>" + FRAMING.goal + "</div>" +
+            "<div class='start-wrap'><button class='nav-btn primary start-btn' id='start-btn'>Start the workshop &rarr;</button></div>";
+        document.getElementById("start-btn").addEventListener("click", beginWorkshop);
+
         var s = loadState();
         current = (typeof s.current === "number" && s.current >= 0 && s.current < PHASES.length) ? s.current : 0;
         for (var j = 0; j < current; j++) { s.done[PHASES[j].id] = true; }
         saveState(s);
         renderStage(); updateProgress();
+        applyView(!!s.started);
     })();
     </script>
 </body>
