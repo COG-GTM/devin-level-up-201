@@ -104,6 +104,14 @@
         .copy-btn:hover { background: #00d4cd; color: var(--ink); }
         .copy-btn.copied { background: #00d4cd; color: var(--ink); }
         .clearfix::after { content: ""; display: block; clear: both; }
+        .prompt-opt { margin-top: 16px; }
+        .prompt-opt > summary { cursor: pointer; font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+            list-style: none; display: inline-flex; align-items: center; gap: 7px; user-select: none; }
+        .prompt-opt > summary::-webkit-details-marker { display: none; }
+        .prompt-opt > summary::before { content: "\25B8"; color: var(--pink); font-size: 0.95em; }
+        .prompt-opt[open] > summary::before { content: "\25BE"; }
+        .prompt-opt > summary:hover { color: var(--ink); }
+        .prompt-opt .prompt-wrap { margin-top: 10px; }
 
         /* Extra note (validate / checkpoint) */
         .extra { margin-top: 22px; border-top: 1px dashed var(--line); padding-top: 18px; }
@@ -209,16 +217,17 @@
             goal: "<strong>Goal:</strong> capture 4–6 of your team's conventions as <strong>atomic knowledge notes</strong> Devin retrieves automatically.",
             options: {
                 a: {
-                    title: "Distill your real conventions",
-                    desc: "You already have a source of truth — a <code>CONTRIBUTING.md</code>, a style guide, a runbook, or just \u201cthe way our best service is written.\u201d Have Devin turn it into notes.",
-                    steps: ["Pick the one doc or repo that best captures how your team works.", "Run the prompt below to distill it.", "Review each note, then save it in the web app under <strong>Knowledge \u2192 New</strong>."],
-                    prompt: "Read [doc / repo] and extract our conventions into a set of atomic knowledge notes — one rule each. For every note give me a scope/trigger (exactly when it should be retrieved, e.g. \u201cWhen adding an API endpoint in [repo]\u201d) and a tight body with the rule plus the why for anything non-obvious. Skip generic engineering advice and anything already obvious from the code. Flag anything ambiguous instead of guessing."
+                    title: "Let Devin interview you",
+                    desc: "Nothing written down? Let Devin pull it out of you. It asks about a repo's docs and conventions, then <strong>suggests</strong> atomic notes for you to review and save. The prompt below is just an optional way to kick it off.",
+                    steps: ["Point Devin at the repo you know best.", "Answer its questions about docs, naming, structure, and CI.", "Review the notes it suggests and save the keepers under <strong>Knowledge \u2192 New</strong>."],
+                    promptOptional: true,
+                    prompt: "Interview me to capture conventions for [repo]. Ask one question at a time about its docs, naming, structure, error handling, and CI. When you have enough, suggest a short list of atomic knowledge notes — each with a trigger and a one-line rule — for me to review."
                 },
                 b: {
                     title: "Mine conventions from a repo",
                     desc: "No written conventions? Derive them straight from code. Point Devin at your cleanest repo and let it infer the unwritten rules.",
                     steps: ["Choose your cleanest, most representative repo.", "Run the prompt below.", "Review — anything Devin marks <code>inferred</code> deserves an extra glance — then save the keepers."],
-                    prompt: "Analyze [your cleanest repo] and infer the conventions a new contributor must follow — naming (files, functions, variables), folder/module structure, error handling, logging, API response shape, import style. Produce 4–6 atomic knowledge notes, one rule each, every rule grounded in a real file path. For anything you're inferring rather than reading from a written rule, mark it inferred. Each note: a scope/trigger + a tight body + the why."
+                    prompt: "Analyze [repo] and infer its conventions — naming, structure, error handling, API response shape, imports. Give me 4–6 atomic knowledge notes, one rule each, grounded in real file paths. Mark anything you inferred rather than read."
                 }
             },
             extra: [
@@ -235,16 +244,17 @@
             goal: "<strong>Goal:</strong> turn one repetitive task into a reusable, parameterized <strong>playbook</strong> you attach to a session.",
             options: {
                 a: {
-                    title: "Your recurring task",
-                    desc: "Pick something you repeat that's <strong>repetitive + parameterizable + verifiable</strong> — a dependency bump, \u201cadd a CRUD endpoint,\u201d cutting a release, scaffolding a component. Let Devin draft it from how you actually do it today.",
-                    steps: ["Name the task and find 2–3 recent PRs that did it.", "Run the prompt to draft the playbook.", "Save it in the web app under <strong>Playbooks \u2192 New</strong>."],
-                    prompt: "Find 2–3 recent PRs in [repo] that did <recurring task> and extract the real steps, files touched, and conventions. Draft a reusable playbook with: an Overview (what + when to use), an Inputs section listing the parameters an operator fills in (e.g. <version>, <ticket_id>), an ordered Procedure that pins the approach and names the real files so Devin doesn't re-discover them, and an Output section (PR link + summary). Ground every step in real code. Verification step (required for any code change): start the dev server, open the app in a browser, click the main flows, and attach a screen recording as proof."
+                    title: "Let Devin draft it with you",
+                    desc: "Not sure how to structure it? Name a task you keep repeating and let Devin study how you do it today, then <strong>draft</strong> the playbook for you to refine. The prompt below is just an optional way to kick it off.",
+                    steps: ["Name a task you repeat — a release, a dep bump, scaffolding a component.", "Let Devin read 2–3 recent PRs that did it and ask you about the gaps.", "Review its draft and save it under <strong>Playbooks \u2192 New</strong>."],
+                    promptOptional: true,
+                    prompt: "Help me turn <recurring task> in [repo] into a playbook. Read 2–3 recent PRs that did it, ask me about anything unclear, then draft a parameterized playbook — overview, inputs, ordered steps, and a verification step — for me to review."
                 },
                 b: {
                     title: "Security vulnerability sweep",
                     desc: "No recurring task in mind? Build one every team needs and can run against <em>any</em> repo — a <strong>dependency security audit</strong>. Repetitive (run it every sprint), parameterizable (point it at any repo), verifiable (clean or patched).",
                     steps: ["Run the prompt below to draft the playbook.", "Save it under <strong>Playbooks \u2192 New</strong>.", "Note that it now works against every repo you own — that's the whole point of a playbook over a one-off prompt."],
-                    prompt: "Draft a reusable playbook \u201cSecurity vulnerability sweep\u201d with input <repo>. Procedure: (1) detect the package manager and run the appropriate audit (npm audit / pip-audit / cargo audit / etc.), (2) list each vulnerability with severity, the affected package, and the fixed version, (3) bump only the vulnerable dependencies to their nearest safe version — no unrelated upgrades, (4) run the build and test suite to confirm nothing broke, (5) open a PR summarizing what was patched and what (if anything) needs a manual major-version bump. Verification: the audit re-run reports no remaining high/critical issues and the tests pass. Output: PR link + a before/after vulnerability count."
+                    prompt: "Draft a reusable \u201cSecurity vulnerability sweep\u201d playbook with input <repo>: detect the package manager and run its audit, patch only vulnerable deps to their nearest safe version, run the build and tests, then open a PR with a before/after vulnerability count."
                 }
             },
             extra: [
@@ -364,9 +374,13 @@
             html += "</div>";
         }
         if (opt.prompt) {
-            html += "<div style='margin-top:16px'><div class='prompt-label'>Copy this prompt into Devin</div>";
-            html += "<div class='prompt-wrap'><div class='prompt' data-raw=\"" + esc(opt.prompt).replace(/\"/g, "&quot;") + "\">" + promptHTML(opt.prompt) + "</div>";
-            html += "<div class='clearfix'><button class='copy-btn' data-copy='1'>Copy prompt</button></div></div></div>";
+            var pw = "<div class='prompt-wrap'><div class='prompt' data-raw=\"" + esc(opt.prompt).replace(/\"/g, "&quot;") + "\">" + promptHTML(opt.prompt) + "</div>";
+            pw += "<div class='clearfix'><button class='copy-btn' data-copy='1'>Copy prompt</button></div></div>";
+            if (opt.promptOptional) {
+                html += "<details class='prompt-opt'><summary>Optional — a prompt to guide Devin</summary>" + pw + "</details>";
+            } else {
+                html += "<div style='margin-top:16px'><div class='prompt-label'>Copy this prompt into Devin</div>" + pw + "</div>";
+            }
         }
         if (opt.after) { html += "<p class='opt-desc' style='margin-top:16px;margin-bottom:0'>" + opt.after + "</p>"; }
         return html;
@@ -440,8 +454,10 @@
     function setPhase(i) {
         if (i < 0 || i >= PHASES.length) return;
         current = i;
-        var s = loadState(); s.current = current; saveState(s);
-        renderStage();
+        var s = loadState(); s.current = current;
+        for (var j = 0; j < current; j++) { s.done[PHASES[j].id] = true; }
+        saveState(s);
+        renderStage(); updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
     function goTo(i) { setPhase(i); }
@@ -464,6 +480,8 @@
     (function init() {
         var s = loadState();
         current = (typeof s.current === "number" && s.current >= 0 && s.current < PHASES.length) ? s.current : 0;
+        for (var j = 0; j < current; j++) { s.done[PHASES[j].id] = true; }
+        saveState(s);
         renderStage(); updateProgress();
     })();
     </script>
