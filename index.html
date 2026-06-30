@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devin Level Up — Workshop</title>
+    <title>Devin Level Up Workshop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -204,16 +204,16 @@
             id: 0,
             eyebrow: "Start here",
             title: "Framing",
-            meta: "10 min · set the table",
-            narrative: "<span class='label'>Why we're here</span><p>You already know how to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt — they come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
-            goal: "<p>We'll work three levers, in order — each one makes the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong> — teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong> — turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong> — find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3–4, and answer this out loud — <em>\u201cwhere did Devin waste the most time for you last week?\u201d</em> Hold that answer for Stage 3.</p>"
+            meta: "Set the table",
+            narrative: "<span class='label'>Why we're here</span><p>You already know how to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt. They come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
+            goal: "<p>We'll work three levers, in order, each one making the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong>: teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong>: turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong>: find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3 or 4, and mix experience levels. If you haven't used Devin much, team up with someone who has.</p>"
         },
         {
             id: 1,
             eyebrow: "Stage 1 · Lever 1",
             title: "Gather Knowledge",
-            meta: "30 min · capture conventions",
-            narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works — but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em> — it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
+            meta: "Capture conventions",
+            narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works, but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em>: it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
             goal: "<strong>Goal:</strong> capture 4–6 of your team's conventions as <strong>atomic knowledge notes</strong> Devin retrieves automatically.",
             options: {
                 a: {
@@ -221,17 +221,17 @@
                     desc: "Nothing written down? Let Devin pull it out of you. It asks about a repo's docs and conventions, then <strong>suggests</strong> atomic notes for you to review and save. The prompt below is just an optional way to kick it off.",
                     steps: ["Point Devin at the repo you know best.", "Answer its questions about docs, naming, structure, and CI.", "Review the notes it suggests and save the keepers under <strong>Knowledge \u2192 New</strong>."],
                     promptOptional: true,
-                    prompt: "Interview me to capture conventions for [repo]. Ask one question at a time about its docs, naming, structure, error handling, and CI. When you have enough, suggest a short list of atomic knowledge notes — each with a trigger and a one-line rule — for me to review."
+                    prompt: "Interview me to capture conventions for [repo]. Ask one question at a time about its docs, naming, structure, error handling, and CI. When you have enough, suggest a short list of atomic knowledge notes, each with a trigger and a one-line rule, for me to review."
                 },
                 b: {
                     title: "Mine conventions from a repo",
                     desc: "No written conventions? Derive them straight from code. Point Devin at your cleanest repo and let it infer the unwritten rules.",
-                    steps: ["Choose your cleanest, most representative repo.", "Run the prompt below.", "Review — anything Devin marks <code>inferred</code> deserves an extra glance — then save the keepers."],
-                    prompt: "Analyze [repo] and infer its conventions — naming, structure, error handling, API response shape, imports. Give me 4–6 atomic knowledge notes, one rule each, grounded in real file paths. Mark anything you inferred rather than read."
+                    steps: ["Choose your cleanest, most representative repo.", "Run the prompt below.", "Review: anything Devin marks <code>inferred</code> deserves an extra glance, then save the keepers."],
+                    prompt: "Analyze [repo] and infer its conventions: naming, structure, error handling, API response shape, imports. Give me 4 to 6 atomic knowledge notes, one rule each, grounded in real file paths. Mark anything you inferred rather than read."
                 }
             },
             extra: [
-                { k: "Validate", v: "Start a fresh session with a prompt that <em>should</em> pull a note (e.g. \u201cadd an endpoint\u201d). Confirm Devin actually applies the rule. If it doesn't fire, the trigger is too narrow — widen it and retry." },
+                { k: "Validate", v: "Start a fresh session with a prompt that <em>should</em> pull a note (e.g. \u201cadd an endpoint\u201d). Confirm Devin actually applies the rule. If it doesn't fire, the trigger is too narrow, so widen it and retry." },
                 { k: "Checkpoint", check: true, v: "<em>Which single note will save you the most review cycles, and why?</em>" }
             ]
         },
@@ -239,21 +239,21 @@
             id: 2,
             eyebrow: "Stage 2 · Lever 2",
             title: "Build a Playbook",
-            meta: "25 min · automate the repeats",
-            narrative: "<span class='label'>Picture this</span><p>Every release, someone does the same dance: cut the branch, bump the version, regenerate the changelog from merged PRs, run the smoke tests, open the PR. Everyone does it slightly differently, the new hire doesn't know the steps, and you re-type a long prompt from memory each time — forgetting the smoke-test step half the time.</p><p>A <em>playbook</em> freezes that workflow once. Next release, anyone attaches it, fills in <code>&lt;version&gt;</code>, and Devin runs the exact same steps every time — including the one you keep forgetting. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
+            meta: "Automate the repeats",
+            narrative: "<span class='label'>Picture this</span><p>Every release, someone does the same dance: cut the branch, bump the version, regenerate the changelog from merged PRs, run the smoke tests, open the PR. Everyone does it slightly differently, the new hire doesn't know the steps, and you re-type a long prompt from memory each time, forgetting the smoke-test step half the time.</p><p>A <em>playbook</em> freezes that workflow once. Next release, anyone attaches it, fills in <code>&lt;version&gt;</code>, and Devin runs the exact same steps every time, including the one you keep forgetting. Knowledge taught Devin <em>how your code should look</em>; a playbook teaches it <em>how to run a recurring job</em>.</p>",
             goal: "<strong>Goal:</strong> turn one repetitive task into a reusable, parameterized <strong>playbook</strong> you attach to a session.",
             options: {
                 a: {
                     title: "Let Devin draft it with you",
                     desc: "Not sure how to structure it? Name a task you keep repeating and let Devin study how you do it today, then <strong>draft</strong> the playbook for you to refine. The prompt below is just an optional way to kick it off.",
-                    steps: ["Name a task you repeat — a release, a dep bump, scaffolding a component.", "Let Devin read 2–3 recent PRs that did it and ask you about the gaps.", "Review its draft and save it under <strong>Playbooks \u2192 New</strong>."],
+                    steps: ["Name a task you repeat: a release, a dep bump, scaffolding a component.", "Let Devin read 2 or 3 recent PRs that did it and ask you about the gaps.", "Review its draft and save it under <strong>Playbooks \u2192 New</strong>."],
                     promptOptional: true,
-                    prompt: "Help me turn <recurring task> in [repo] into a playbook. Read 2–3 recent PRs that did it, ask me about anything unclear, then draft a parameterized playbook — overview, inputs, ordered steps, and a verification step — for me to review."
+                    prompt: "Help me turn <recurring task> in [repo] into a playbook. Read 2 or 3 recent PRs that did it, ask me about anything unclear, then draft a parameterized playbook (overview, inputs, ordered steps, and a verification step) for me to review."
                 },
                 b: {
                     title: "Security vulnerability sweep",
-                    desc: "No recurring task in mind? Build one every team needs and can run against <em>any</em> repo — a <strong>dependency security audit</strong>. Repetitive (run it every sprint), parameterizable (point it at any repo), verifiable (clean or patched).",
-                    steps: ["Run the prompt below to draft the playbook.", "Save it under <strong>Playbooks \u2192 New</strong>.", "Note that it now works against every repo you own — that's the whole point of a playbook over a one-off prompt."],
+                    desc: "No recurring task in mind? Build one every team needs and can run against <em>any</em> repo: a <strong>dependency security audit</strong>. Repetitive (run it every sprint), parameterizable (point it at any repo), verifiable (clean or patched).",
+                    steps: ["Run the prompt below to draft the playbook.", "Save it under <strong>Playbooks \u2192 New</strong>.", "Note that it now works against every repo you own, which is the whole point of a playbook over a one-off prompt."],
                     prompt: "Draft a reusable \u201cSecurity vulnerability sweep\u201d playbook with input <repo>: detect the package manager and run its audit, patch only vulnerable deps to their nearest safe version, run the build and tests, then open a PR with a before/after vulnerability count."
                 }
             },
@@ -266,13 +266,13 @@
             id: 3,
             eyebrow: "Stage 3 · Lever 3",
             title: "Optimize a Session",
-            meta: "20 min · kill the waste",
-            narrative: "<span class='label'>Picture this</span><p>You open a session that burned a ton of usage. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works — a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the cost was already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d — it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
+            meta: "Kill the waste",
+            narrative: "<span class='label'>Picture this</span><p>You open a session that burned a ton of usage. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works, a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the cost was already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d; it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
             goal: "<strong>Goal:</strong> find a session that was slow, expensive, or never merged; name <em>why</em>; and apply one fix so that whole category of waste stops.",
             options: {
                 a: {
                     title: "Diagnose a real session",
-                    desc: "No API or special access needed — just scroll back through your own session history in the web app and find a bad one.",
+                    desc: "No API or special access needed. Just scroll back through your own session history in the web app and find a bad one.",
                     steps: ["Hunt for the tells: a long thread with lots of back-and-forth, an unusually high usage number, a session that ran forever, or a PR opened but never merged.", "Open it and skim the timeline to see where the time actually went. (The session's <strong>Insights</strong> tab summarizes it for you, but eyeballing the thread is enough.)", "Classify it into <strong>exactly one</strong> root cause, then apply the matching fix."],
                     table: [
                         ["Unnecessary investigation", "Searched many files before finding an existing pattern", "Knowledge note / skill naming the file"],
@@ -281,12 +281,12 @@
                         ["Scope creep", "Task too broad; tried to do too much", "Split into smaller / parallel sessions"],
                         ["Stalled review", "PR opened but never merged", "Smaller PRs + clear success criteria up front"]
                     ],
-                    after: "<strong>Apply one fix now</strong> — usually a knowledge note or playbook from Stage 1/2, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare usage before vs. after."
+                    after: "<strong>Apply one fix now</strong>, usually a knowledge note or playbook from Stage 1/2, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare usage before vs. after."
                 },
                 b: {
                     title: "Manufacture a before / after",
-                    desc: "No bad sessions to point at? Create the contrast yourself in about 10 minutes — it proves the value of everything you built today.",
-                    steps: ["<strong>Baseline:</strong> start a fresh session with a deliberately thin prompt for a real-ish task (no extra context). Watch it investigate, guess conventions, maybe go down the wrong path.", "<strong>Optimized:</strong> start a second session for the <em>same</em> task — this time with your Stage 1 knowledge notes live and/or your Stage 2 playbook attached.", "<strong>Compare</strong> usage and quality side by side. The gap is exactly what your artifacts are worth."]
+                    desc: "No bad sessions to point at? Create the contrast yourself in about 10 minutes. It proves the value of everything you built today.",
+                    steps: ["<strong>Baseline:</strong> start a fresh session with a deliberately thin prompt for a real-ish task (no extra context). Watch it investigate, guess conventions, maybe go down the wrong path.", "<strong>Optimized:</strong> start a second session for the <em>same</em> task, this time with your Stage 1 knowledge notes live and/or your Stage 2 playbook attached.", "<strong>Compare</strong> usage and quality side by side. The gap is exactly what your artifacts are worth."]
                 }
             },
             extra: [
@@ -297,9 +297,9 @@
             id: 4,
             eyebrow: "Finish",
             title: "Wrap-Up",
-            meta: "5 min · share + ship",
-            narrative: "<span class='label'>Land it</span><p>You walked in using Devin and you're walking out having <em>tuned</em> it — a knowledge note, a playbook, and a fix that each kill a recurring source of waste. Small artifacts, compounding returns.</p>",
-            goal: "<p><strong>Share-out:</strong> each group names the <strong>single most impactful artifact</strong> they built today and the recurring waste it kills.</p><p><strong>Take it home:</strong></p><ul class='steps'><li>Ship today's notes and playbooks to the whole org so everyone benefits.</li><li>Put Stage 3 on a schedule — a weekly recurring session that pulls the last 7 days, classifies waste by the buckets above, and posts the top 3 highest-leverage fixes to Slack or Notion.</li></ul><p>That's leveling up: less re-explaining, fewer wasted cycles, more shipping.</p>"
+            meta: "Share + ship",
+            narrative: "<span class='label'>Land it</span><p>You walked in using Devin and you're walking out having <em>tuned</em> it: a knowledge note, a playbook, and a fix that each kill a recurring source of waste. Small artifacts, compounding returns.</p>",
+            goal: "<p><strong>Share-out:</strong> each group names the <strong>single most impactful artifact</strong> they built today and the recurring waste it kills.</p><p><strong>Take it home:</strong></p><ul class='steps'><li>Ship today's notes and playbooks to the whole org so everyone benefits.</li><li>Put Stage 3 on a schedule: a weekly recurring session that pulls the last 7 days, classifies waste by the buckets above, and posts the top 3 highest-leverage fixes to Slack or Notion.</li></ul><p>That's leveling up: less re-explaining, fewer wasted cycles, more shipping.</p>"
         }
     ];
 
@@ -377,7 +377,7 @@
             var pw = "<div class='prompt-wrap'><div class='prompt' data-raw=\"" + esc(opt.prompt).replace(/\"/g, "&quot;") + "\">" + promptHTML(opt.prompt) + "</div>";
             pw += "<div class='clearfix'><button class='copy-btn' data-copy='1'>Copy prompt</button></div></div>";
             if (opt.promptOptional) {
-                html += "<details class='prompt-opt'><summary>Optional — a prompt to guide Devin</summary>" + pw + "</details>";
+                html += "<details class='prompt-opt'><summary>Optional: a prompt to guide Devin</summary>" + pw + "</details>";
             } else {
                 html += "<div style='margin-top:16px'><div class='prompt-label'>Copy this prompt into Devin</div>" + pw + "</div>";
             }
