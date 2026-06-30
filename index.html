@@ -221,7 +221,7 @@
             eyebrow: "Stage 1",
             title: "Gather Knowledge",
             narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works, but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em>: it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
-            goal: "<strong>Goal:</strong> capture 4–6 of your team's conventions as <strong>atomic knowledge notes</strong> Devin retrieves automatically.",
+            goal: "<strong>Goal:</strong> identify your team's conventions and add them to <strong>Devin's knowledge</strong> so it retrieves them automatically.",
             options: {
                 a: {
                     title: "Create Knowledge for Devin",
@@ -270,13 +270,13 @@
             id: 2,
             eyebrow: "Stage 3",
             title: "Optimize a Session",
-            narrative: "<span class='label'>Picture this</span><p>You open a session that burned a ton of usage. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works, a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the cost was already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d; it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
+            narrative: "<span class='label'>Picture this</span><p>You open a session that wasted a ton of time and tokens. The timeline shows Devin spent the first third grepping through 30 files looking for how pagination works, a pattern that already lived in <code>lib/paginate.ts</code>. It eventually found it, but the time and tokens were already spent.</p><p>Root cause: <em>unnecessary investigation</em>. The fix isn't \u201cprompt better next time\u201d; it's a one-line knowledge note (\u201cpagination lives in <code>lib/paginate.ts</code>, offset-based\u201d) that kills this entire class of waste for <em>every</em> future session. Diagnosis turns one expensive session into a permanent fix.</p>",
             goal: "<strong>Goal:</strong> find a session that was slow, expensive, or never merged; name <em>why</em>; and apply one fix so that whole category of waste stops.",
             options: {
                 a: {
                     title: "Diagnose a real session",
                     desc: "No API or special access needed. Just scroll back through your own session history in the web app and find a bad one.",
-                    steps: ["Hunt for the tells: a long thread with lots of back-and-forth, an unusually high usage number, a session that ran forever, or a PR opened but never merged.", "Open it and click <strong>Generate session insights</strong> to get a breakdown of where the time and ACUs actually went.", "Classify it into <strong>exactly one</strong> root cause, then apply the matching fix."],
+                    steps: ["Hunt for the tells: a long thread with lots of back-and-forth, an unusually high token count, a session that ran forever, or a PR opened but never merged.", "Open it and click <strong>Generate session insights</strong> to get a breakdown of where the time and ACUs actually went.", "Classify it into <strong>exactly one</strong> root cause, then apply the matching fix."],
                     table: [
                         ["Unnecessary investigation", "Searched many files before finding an existing pattern", "Knowledge note / skill naming the file"],
                         ["Wrong approach", "Chose a strategy that conflicted and had to rewrite", "Pin the approach in a prompt / skill"],
@@ -284,12 +284,12 @@
                         ["Scope creep", "Task too broad; tried to do too much", "Split into smaller / parallel sessions"],
                         ["Stalled review", "PR opened but never merged", "Smaller PRs + clear success criteria up front"]
                     ],
-                    after: "<strong>Apply one fix now</strong>, usually a knowledge note or playbook from Stage 1/2, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare usage before vs. after."
+                    after: "<strong>Apply one fix now</strong>, usually a knowledge note or playbook from Stage 1/2, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare time and tokens before vs. after."
                 },
                 b: {
                     title: "Run a before / after",
                     desc: "No session worth dissecting? Prove the value yourself in about 10 minutes. Pick any small, well-scoped task in a repo you know and run it twice.",
-                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for the task with no extra context. Watch Devin guess at your conventions and investigate from scratch.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session now that your Stage 1 knowledge notes exist (Devin retrieves them automatically) and, if it fits, with your Stage 2 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in usage and back-and-forth is exactly what your artifacts are worth."]
+                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for the task with no extra context. Watch Devin guess at your conventions and investigate from scratch.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session now that your Stage 1 knowledge notes exist (Devin retrieves them automatically) and, if it fits, with your Stage 2 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in time, tokens, and back-and-forth is exactly what your artifacts are worth."]
                 }
             },
             extra: [
