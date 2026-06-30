@@ -310,9 +310,9 @@
                     after: "<strong>Apply one fix now</strong>, usually the knowledge note or playbook from Phase 1, a prompt rewrite, or a repo-setup change. If time allows, re-run the task with the fix and compare time and tokens before vs. after."
                 },
                 b: {
-                    title: "Run a before / after",
-                    desc: "No session worth dissecting? Prove the value yourself in about 10 minutes. Pick any small, well-scoped task in a repo you know and run it twice.",
-                    steps: ["<strong>Baseline:</strong> in a fresh session, give a thin prompt for the task with no extra context. Watch Devin guess at your conventions and investigate from scratch.", "<strong>Optimized:</strong> run the <em>same</em> task in a new session now that your Phase 1 knowledge note exists (Devin retrieves it automatically) and, if it fits, with your Phase 1 playbook attached.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong> on each. The gap in time, tokens, and back-and-forth is exactly what your artifacts are worth."]
+                    title: "One-shot vs. plan with Ask",
+                    desc: "No session worth dissecting? Prove it yourself. Take one genuinely complex task and run it twice: once fired off in a single shot, once after using <strong>Ask</strong> to scope it first.",
+                    steps: ["<strong>One-shot:</strong> in a fresh session, paste a thin one-line prompt for the complex task and let Devin run. Watch it guess at scope, investigate from scratch, and double back when its assumptions miss.", "<strong>Plan with Ask:</strong> start over and use <strong>Ask</strong> on the same task first. It reads the relevant code, surfaces the unknowns and edge cases, and drafts a concrete plan without burning an execution session. Refine that plan, then hand the scoped version to Devin to build.", "<strong>Compare</strong> the two with <strong>Generate session insights</strong>. Ask spends cheap planning tokens up front so the build runs tighter: less wandering, fewer wrong turns, and noticeably less time and tokens overall. Scoping the work before firing it off is what keeps the model performant."]
                 }
             },
             extra: [
