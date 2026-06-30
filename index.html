@@ -48,9 +48,9 @@
             transition: all 0.18s ease; flex-shrink: 0; }
         .step-dot:hover { border-color: var(--ink); color: var(--ink); }
         .step-dot.current { border-color: var(--cyan); color: var(--ink); box-shadow: 0 0 0 4px rgba(0,242,234,0.25); }
-        .step-dot.done { background: var(--ink); border-color: var(--ink); color: var(--cyan); }
+        .step-dot.done { background: var(--cyan); border-color: var(--cyan); color: var(--ink); }
         .step-line { width: 28px; height: 2px; background: var(--line); flex-shrink: 0; }
-        .step-line.done { background: var(--ink); }
+        .step-line.done { background: var(--cyan); }
 
         /* Stage card */
         .stage { background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
@@ -77,10 +77,8 @@
         .opt-btn { padding: 9px 20px; font-size: 0.86rem; font-weight: 700; color: var(--muted); background: none; border: none; border-radius: 9px;
             cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
         .opt-btn .tag { font-size: 0.68rem; font-weight: 800; padding: 1px 7px; border-radius: 99px; background: #d9d9de; color: #555; }
-        .opt-btn.active[data-opt="a"] { background: var(--ink); color: #fff; }
-        .opt-btn.active[data-opt="a"] .tag { background: var(--cyan); color: var(--ink); }
-        .opt-btn.active[data-opt="b"] { background: var(--ink); color: #fff; }
-        .opt-btn.active[data-opt="b"] .tag { background: var(--pink); color: #fff; }
+        .opt-btn.active { background: var(--cyan); color: var(--ink); }
+        .opt-btn.active .tag { background: #fff; color: var(--ink); }
 
         .opt-pane { display: none; animation: fade 0.22s ease; }
         .opt-pane.active { display: block; }
@@ -103,8 +101,8 @@
         .prompt .hl { color: var(--cyan); }
         .copy-btn { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 0 auto; background: var(--cyan); color: var(--ink); border: none;
             border-radius: 8px; padding: 8px 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s; float: right; }
-        .copy-btn:hover { background: var(--ink); color: var(--cyan); }
-        .copy-btn.copied { background: var(--pink); color: #fff; }
+        .copy-btn:hover { background: #00d4cd; color: var(--ink); }
+        .copy-btn.copied { background: #00d4cd; color: var(--ink); }
         .clearfix::after { content: ""; display: block; clear: both; }
 
         /* Extra note (validate / checkpoint) */
@@ -125,8 +123,8 @@
         .nav-btn { padding: 10px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--ink);
             background: var(--card); color: var(--ink); cursor: pointer; transition: all 0.15s; }
         .nav-btn:hover:not(:disabled) { background: var(--cyan); border-color: var(--cyan); }
-        .nav-btn.primary { background: var(--ink); border-color: var(--ink); color: var(--cyan); }
-        .nav-btn.primary:hover:not(:disabled) { background: var(--pink); border-color: var(--pink); color: #fff; }
+        .nav-btn.primary { background: var(--cyan); border-color: var(--cyan); color: var(--ink); }
+        .nav-btn.primary:hover:not(:disabled) { background: #00d4cd; border-color: #00d4cd; color: var(--ink); }
         .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .footer { text-align: center; margin-top: 22px; display: flex; gap: 14px; align-items: center; justify-content: center; }
@@ -156,7 +154,6 @@
         <div class="header">
             <span class="eyebrow-top">Devin 201 · Leveling Up</span>
             <div class="logo"><span class="w1">Devin</span> <span class="w2">Level</span> <span class="w3">Up</span></div>
-            <p class="subtitle">You already ship with Devin. This 75-minute session is about making it work better in <em>your</em> environment — three levers: <strong>Knowledge</strong>, <strong>Playbooks</strong>, and <strong>Session Optimization</strong>. Each stage gives you two ways in: pick <strong>Option A</strong> or <strong>Option B</strong>, not both.</p>
         </div>
 
         <div class="progress-wrap">
@@ -200,7 +197,7 @@
             eyebrow: "Start here",
             title: "Framing",
             meta: "10 min · set the table",
-            narrative: "<span class='label'>Why we're here</span><p>Session 1 taught people to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt — they come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
+            narrative: "<span class='label'>Why we're here</span><p>You already know how to <em>use</em> Devin. Today is about <em>tuning</em> it. The fastest wins almost never come from a cleverer prompt — they come from giving Devin the context it's missing and the workflows it keeps reinventing.</p>",
             goal: "<p>We'll work three levers, in order — each one makes the next one stronger:</p><ol class='steps'><li><strong>Knowledge</strong> — teach Devin your team's conventions so it stops guessing.</li><li><strong>Playbooks</strong> — turn a repetitive task into a reusable, one-click workflow.</li><li><strong>Session Optimization</strong> — find where Devin wasted time and kill the cause.</li></ol><p>Every stage has <strong>Option A</strong> (use your own real work) and <strong>Option B</strong> (a general fallback if you don't have the material handy). You build the same artifact either way.</p><p><strong>Before we start:</strong> form groups of 3–4, and answer this out loud — <em>\u201cwhere did Devin waste the most time for you last week?\u201d</em> Hold that answer for Stage 3.</p>"
         },
         {
