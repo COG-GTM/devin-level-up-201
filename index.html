@@ -236,24 +236,24 @@
             eyebrow: "Stage 1",
             title: "Gather Knowledge",
             narrative: "<span class='label'>Picture this</span><p>You ask Devin to add an API endpoint. It works, but it names the file <code>userController.js</code> when everything else is kebab-case, returns a raw object instead of your standard <code>{ data, error }</code> envelope, and skips the Zod schema your team requires. Nothing is <em>broken</em>, so review catches it and bounces it back. You just burned a cycle on style.</p><p>Now imagine Devin already knew those three rules. It writes it right the first time. <em>That's a knowledge note</em>: it encodes a convention once so you never re-explain it. The highest-value notes describe the things Devin currently gets <strong>wrong</strong> in your environment.</p>",
-            goal: "<strong>Goal:</strong> pick one important convention for a repo and add it as a single knowledge note <strong>pinned to that repo</strong>, so Devin retrieves it automatically.",
+            goal: "<strong>Goal:</strong> capture a collection of one repo's conventions as a single knowledge note <strong>pinned to that repo</strong>, so Devin retrieves it automatically.",
             options: {
                 a: {
                     title: "Create Knowledge for Devin",
-                    desc: "Write one knowledge note for the repo you know best and pin it to that repo. Pick the single convention Devin most often gets wrong. The optional prompt below just has Devin interview you to land on it if you want a hand.",
-                    steps: ["Pick the repo you know best and the one convention Devin gets wrong most (naming, structure, error handling, API shape, or CI).", "Go to <strong>Settings \u2192 Workshop-6-30 org \u2192 Knowledge \u2192 Create Knowledge</strong> and write it as a single, clear note.", "<strong>Pin it to the repo</strong> so Devin retrieves it automatically on that repo."],
+                    desc: "For the repo you know best, write a single knowledge note that collects its conventions, the ones Devin keeps getting wrong, and pin it to that repo. The optional prompt below just has Devin interview you to round them up if you want a hand.",
+                    steps: ["Pick the repo you know best and list its conventions: naming, structure, error handling, API shape, CI, anything Devin gets wrong.", "Go to <strong>Settings \u2192 Workshop-6-30 org \u2192 Knowledge \u2192 Create Knowledge</strong> and write them up as one clear note.", "<strong>Pin it to the repo</strong> so Devin retrieves it automatically on that repo."],
                     promptOptional: true,
-                    prompt: "Help me pick the single most important convention for [repo] to capture as a knowledge note. Ask me one question at a time about its naming, structure, error handling, API shape, and CI, then propose one clear note for me to pin to the repo."
+                    prompt: "Interview me to collect the conventions for [repo] that I want Devin to follow. Ask one question at a time about its naming, structure, error handling, API shape, and CI, then draft a single knowledge note gathering them all for me to pin to the repo."
                 },
                 b: {
-                    title: "Mine the convention from a repo",
-                    desc: "No convention in mind? Let Devin infer the most impactful one straight from the code, then pin that single note to the repo.",
-                    steps: ["Choose your cleanest, most representative repo.", "Run the prompt below to get the one convention worth capturing.", "In <strong>Settings \u2192 Workshop-6-30 org \u2192 Knowledge \u2192 Create Knowledge</strong>, write that note and <strong>pin it to the repo</strong>."],
-                    prompt: "Analyze [repo] and tell me the single most impactful convention to capture as a knowledge note: naming, structure, error handling, API response shape, or imports. Give me one clear note grounded in real file paths, and flag if you inferred it rather than read it."
+                    title: "Mine the conventions from a repo",
+                    desc: "No conventions written down? Let Devin infer them straight from the code, then pin the collected set as one note on the repo.",
+                    steps: ["Choose your cleanest, most representative repo.", "Run the prompt below to gather its conventions.", "In <strong>Settings \u2192 Workshop-6-30 org \u2192 Knowledge \u2192 Create Knowledge</strong>, write them up as one note and <strong>pin it to the repo</strong>."],
+                    prompt: "Analyze [repo] and infer its conventions: naming, structure, error handling, API response shape, and imports. Give me a single knowledge note that collects them, grounded in real file paths, and flag anything you inferred rather than read."
                 }
             },
             extra: [
-                { k: "Validate", v: "Start a fresh session on that repo with a prompt that <em>should</em> use the note (e.g. \u201cadd an endpoint\u201d) and confirm Devin applies the convention automatically. If it doesn't, recheck that the note is pinned to the repo." }
+                { k: "Validate", v: "Start a fresh session on that repo with a prompt that <em>should</em> use the note (e.g. \u201cadd an endpoint\u201d) and confirm Devin applies the conventions automatically. If it doesn't, recheck that the note is pinned to the repo." }
             ]
         },
         {
