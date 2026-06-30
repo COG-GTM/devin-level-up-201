@@ -423,8 +423,8 @@
         document.getElementById("complete-check").checked = !!s.done[p.id];
         document.getElementById("prev-btn").disabled = false;
         var nb = document.getElementById("next-btn");
-        nb.disabled = current === PHASES.length - 1;
-        nb.innerHTML = (current === PHASES.length - 1) ? "Done" : "Next &rarr;";
+        nb.disabled = false;
+        nb.innerHTML = (current === PHASES.length - 1) ? "Finish &#10003;" : "Next &rarr;";
         renderStepper();
     }
 
@@ -466,12 +466,19 @@
     document.getElementById("prev-btn").addEventListener("click", function () {
         if (current === 0) { backToIntro(); } else { setPhase(current - 1); }
     });
-    document.getElementById("next-btn").addEventListener("click", function () { setPhase(current + 1); });
+    document.getElementById("next-btn").addEventListener("click", function () {
+        if (current === PHASES.length - 1) {
+            var s = loadState(); s.done[PHASES[current].id] = true; saveState(s);
+            document.getElementById("complete-check").checked = true;
+            updateProgress(); renderStepper();
+            showToast("Workshop complete. Nice work.");
+        } else { setPhase(current + 1); }
+    });
     document.getElementById("complete-check").addEventListener("change", function () {
         var s = loadState();
         s.done[PHASES[current].id] = this.checked; saveState(s);
         updateProgress(); renderStepper();
-        if (this.checked) showToast(PHASES[current].title + " \u2014 done");
+        if (this.checked) showToast(PHASES[current].title + " complete");
     });
 
     function resetAll() {
